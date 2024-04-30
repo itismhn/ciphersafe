@@ -1,5 +1,5 @@
 import requests
-import argparse
+
 def main():
     print("""
    ___ _      _            ___        __     
@@ -8,12 +8,21 @@ def main():
   \___|_| .__/_||_\___|_| |___/\__,_|_| \___|
 @itisMHN|_|V.1.1 https://github.com/itismhn/ciphersafe
     """)
-    get_cipher_suite(cipher_suite_name)
 
 
 # base URL of the API
 base_url = "https://ciphersuite.info/api"
 
+def get_cipher_suite(cipher_suite_name):
+    # Endpoint for getting a TLS cipher suite by name
+    endpoint = "/cs/{}".format(cipher_suite_name)
+    url = base_url + endpoint
+    response = requests.get(url)
+    if response.status_code == 200:
+        data = response.json()
+        print(data)
+    else:
+        print("Failed to retrieve data. Status code:", response.status_code)
 
 if __name__ == "__main__":
     main()
