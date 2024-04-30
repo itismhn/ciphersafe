@@ -1,5 +1,5 @@
 import requests
-
+import argparse
 def main():
     print("""
    ___ _      _            ___        __     
@@ -8,6 +8,14 @@ def main():
   \___|_| .__/_||_\___|_| |___/\__,_|_| \___|
 @itisMHN|_|V.1.1 https://github.com/itismhn/ciphersafe
     """)
+    # Create the argument parser
+    parser = argparse.ArgumentParser(description="check information of tls cipher suites from the Ciphersuite.info API")
+    parser.add_argument("-C", "--cipher", type=str, help="Get information about a specific cipher suite by name")
+    args = parser.parse_args()
+    if args.cipher:
+        get_cipher_suite(args.cipher)
+    else:
+        print("Please provide an argument. Use -h or --help for more information.")
 
 
 # base URL of the API
