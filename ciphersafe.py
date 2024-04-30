@@ -9,6 +9,7 @@ def main():
         |_|
 @itisMHN v1.1 - https://github.com/itismhn/ciphersafe
 """)
+base_url = "https://ciphersuite.info/api"
 
 if __name__ == "__main__":
     main()
