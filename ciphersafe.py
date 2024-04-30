@@ -28,7 +28,11 @@ def get_cipher_suite(cipher_suite_name):
     response = requests.get(url)
     if response.status_code == 200:
         data = response.json()
-        print(data)
+        print("Security: {}".format(data[cipher_suite_name]['security']))
+
+
+
+
     else:
         print("Failed to retrieve data. Status code:", response.status_code)
 
