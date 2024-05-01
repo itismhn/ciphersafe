@@ -28,8 +28,17 @@ def get_cipher_suite(cipher_suite_name):
     response = requests.get(url)
     if response.status_code == 200:
         data = response.json()
-        print("Security: {}".format(data[cipher_suite_name]['security']))
-
+        cipher_info = data[cipher_suite_name]
+        print("Cipher Suite:", cipher_suite_name)
+        print("Security:", cipher_info['security'])
+        print("TLS Version:", cipher_info['tls_version'])
+        print("Hex Byte 1:", cipher_info['hex_byte_1'])
+        print("Hex Byte 2:", cipher_info['hex_byte_2'])
+        print("Protocol Version:", cipher_info['protocol_version'])
+        print("Key Exchange Algorithm:", cipher_info['kex_algorithm'])
+        print("Authentication Algorithm:", cipher_info['auth_algorithm'])
+        print("Encryption Algorithm:", cipher_info['enc_algorithm'])
+        print("Hash Algorithm:", cipher_info['hash_algorithm'])
 
 
 
