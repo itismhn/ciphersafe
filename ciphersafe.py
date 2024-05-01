@@ -38,7 +38,7 @@ def get_cipher_suite(cipher_suite_name):
     if response.status_code == 200:
         data = response.json()
         cipher_info = data[cipher_suite_name]
-        print(COLOR_YELLOW + "Cipher Suite:" + COLOR_RESET, cipher_suite_name)
+        print(COLOR_YELLOW + "Cipher Suite:" + COLOR_RESET, COLOR_WHITE + str(cipher_suite_name) + COLOR_RESET)
         print(COLOR_YELLOW + "Security:" + COLOR_RESET, end=" ")
         security_status = cipher_info.get('security', 'N/A')
         if security_status == 'secure':
@@ -48,13 +48,13 @@ def get_cipher_suite(cipher_suite_name):
         else:
             print(COLOR_RED + security_status + COLOR_RESET)
         print(COLOR_YELLOW + "TLS Version:" + COLOR_RESET, COLOR_WHITE + str(cipher_info.get('tls_version', 'N/A')) + COLOR_RESET)
-        print(COLOR_YELLOW + "Hex Byte 1:" + COLOR_RESET, COLOR_WHITE + cipher_info.get('hex_byte_1', 'N/A') + COLOR_RESET)
-        print(COLOR_YELLOW + "Hex Byte 2:" + COLOR_RESET, COLOR_WHITE + cipher_info.get('hex_byte_2', 'N/A') + COLOR_RESET)
-        print(COLOR_YELLOW + "Protocol Version:" + COLOR_RESET, COLOR_WHITE + cipher_info.get('protocol_version', 'N/A') + COLOR_RESET)
-        print(COLOR_YELLOW + "Key Exchange Algorithm:" + COLOR_RESET, COLOR_WHITE + cipher_info.get('kex_algorithm', 'N/A') + COLOR_RESET)
-        print(COLOR_YELLOW + "Authentication Algorithm:" + COLOR_RESET, COLOR_WHITE + cipher_info.get('auth_algorithm', 'N/A') + COLOR_RESET)
-        print(COLOR_YELLOW + "Encryption Algorithm:" + COLOR_RESET, COLOR_WHITE + cipher_info.get('enc_algorithm', 'N/A') + COLOR_RESET)
-        print(COLOR_YELLOW + "Hash Algorithm:" + COLOR_RESET, COLOR_WHITE + cipher_info.get('hash_algorithm', 'N/A') + COLOR_RESET)
+        print(COLOR_YELLOW + "Hex Byte 1:" + COLOR_RESET, COLOR_WHITE + str(cipher_info.get('hex_byte_1', 'N/A')) + COLOR_RESET)
+        print(COLOR_YELLOW + "Hex Byte 2:" + COLOR_RESET, COLOR_WHITE + str(cipher_info.get('hex_byte_2', 'N/A')) + COLOR_RESET)
+        print(COLOR_YELLOW + "Protocol Version:" + COLOR_RESET, COLOR_WHITE + str(cipher_info.get('protocol_version', 'N/A')) + COLOR_RESET)
+        print(COLOR_YELLOW + "Key Exchange Algorithm:" + COLOR_RESET, COLOR_WHITE + str(cipher_info.get('kex_algorithm', 'N/A')) + COLOR_RESET)
+        print(COLOR_YELLOW + "Authentication Algorithm:" + COLOR_RESET, COLOR_WHITE + str(cipher_info.get('auth_algorithm', 'N/A')) + COLOR_RESET)
+        print(COLOR_YELLOW + "Encryption Algorithm:" + COLOR_RESET, COLOR_WHITE + str(cipher_info.get('enc_algorithm', 'N/A')) + COLOR_RESET)
+        print(COLOR_YELLOW + "Hash Algorithm:" + COLOR_RESET, COLOR_WHITE + str(cipher_info.get('hash_algorithm', 'N/A')) + COLOR_RESET)
         
 
 
