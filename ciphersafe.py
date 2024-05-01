@@ -6,7 +6,7 @@ COLOR_RESET = "\033[0m"
 COLOR_RED = "\033[91m"
 COLOR_GREEN = "\033[32m"
 COLOR_YELLOW = "\033[93m"
-COLOR_BANNER = "\033[1;32m"
+COLOR_BANNER = "\033[1;37m"
 
 def main():
     banner = """
@@ -38,8 +38,8 @@ def get_cipher_suite(cipher_suite_name):
     if response.status_code == 200:
         data = response.json()
         cipher_info = data[cipher_suite_name]
-        print(COLOR_BOLD + "Cipher Suite:", cipher_suite_name + COLOR_RESET)
-        print("Security:", end=" ")
+        print(COLOR_YELLOW + "Cipher Suite:" + COLOR_RESET, cipher_suite_name)
+        print(COLOR_YELLOW + "Security:" + COLOR_RESET, end=" ")
         security_status = cipher_info.get('security', 'N/A')
         if security_status == 'secure':
             print(COLOR_GREEN + security_status + COLOR_RESET)
@@ -47,14 +47,14 @@ def get_cipher_suite(cipher_suite_name):
             print(COLOR_YELLOW + security_status + COLOR_RESET)
         else:
             print(COLOR_RED + security_status + COLOR_RESET)
-        print("TLS Version:", cipher_info.get('tls_version', 'N/A'))
-        print("Hex Byte 1:", cipher_info.get('hex_byte_1', 'N/A'))
-        print("Hex Byte 2:", cipher_info.get('hex_byte_2', 'N/A'))
-        print("Protocol Version:", cipher_info.get('protocol_version', 'N/A'))
-        print("Key Exchange Algorithm:", cipher_info.get('kex_algorithm', 'N/A'))
-        print("Authentication Algorithm:", cipher_info.get('auth_algorithm', 'N/A'))
-        print("Encryption Algorithm:", cipher_info.get('enc_algorithm', 'N/A'))
-        print("Hash Algorithm:", cipher_info.get('hash_algorithm', 'N/A'))
+        print(COLOR_YELLOW + "TLS Version:" + COLOR_RESET, cipher_info.get('tls_version', 'N/A'))
+        print(COLOR_YELLOW + "Hex Byte 1:" + COLOR_RESET, cipher_info.get('hex_byte_1', 'N/A'))
+        print(COLOR_YELLOW + "Hex Byte 2:" + COLOR_RESET, cipher_info.get('hex_byte_2', 'N/A'))
+        print(COLOR_YELLOW + "Protocol Version:" + COLOR_RESET, cipher_info.get('protocol_version', 'N/A'))
+        print(COLOR_YELLOW + "Key Exchange Algorithm:" + COLOR_RESET, cipher_info.get('kex_algorithm', 'N/A'))
+        print(COLOR_YELLOW + "Authentication Algorithm:" + COLOR_RESET, cipher_info.get('auth_algorithm', 'N/A'))
+        print(COLOR_YELLOW + "Encryption Algorithm:" + COLOR_RESET, cipher_info.get('enc_algorithm', 'N/A'))
+        print(COLOR_YELLOW + "Hash Algorithm:" + COLOR_RESET, cipher_info.get('hash_algorithm', 'N/A'))
         
 
 
