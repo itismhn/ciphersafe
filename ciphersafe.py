@@ -14,8 +14,8 @@ def main():
   / __(_)_ __| |_  ___ _ _/ __| __ _ / _|___ 
  | (__| | '_ \\ ' \\/ -_) '_\\__ \\/ _` |  _/ -_)
   \\___|_| .__/_||_\\___|_| |___/\\__,_|_| \\___|
-@itisMHN|_|V.1.1 github.com/itismhn/ciphersafe
-    {}""".format(COLOR_WHITE, COLOR_RESET)
+{}@itisMHN{}|_|{}V.1.1 github.com/itismhn/ciphersafe{}
+    """.format(COLOR_WHITE, COLOR_GREEN, COLOR_RESET, COLOR_GREEN, COLOR_RESET)
     print(banner)
     # Create the argument parser
     parser = argparse.ArgumentParser(description="check information of tls cipher suites from the Ciphersuite.info API")
