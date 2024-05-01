@@ -1,5 +1,8 @@
-![ciphersafe](images/ciphersafe.jpg)
-# ciphersafe
+<p align="center">
+  <img src="images/ciphersafe.jpg" />
+</p>
+
+# CipherSafe
 CipherSafe is a Python script to check information about TLS cipher suites.
 CipherSafe is a Python script designed to assist with security testing by providing information about TLS cipher suites. It leverages the Ciphersuite.info API to retrieve detailed data about specific cipher suites commonly used in secure communication protocols like HTTPS.
 
