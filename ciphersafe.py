@@ -6,15 +6,17 @@ COLOR_RESET = "\033[0m"
 COLOR_RED = "\033[91m"
 COLOR_GREEN = "\033[32m"
 COLOR_YELLOW = "\033[93m"
+COLOR_BANNER = "\033[1;32m"
 
 def main():
-    print("""
-   ___ _      _            ___        __     
+    banner = """
+   {}___ _      _            ___        __     
   / __(_)_ __| |_  ___ _ _/ __| __ _ / _|___ 
  | (__| | '_ \\ ' \\/ -_) '_\\__ \\/ _` |  _/ -_)
   \\___|_| .__/_||_\\___|_| |___/\\__,_|_| \\___|
 @itisMHN|_|V.1.1 github.com/itismhn/ciphersafe
-    """)
+    {}""".format(COLOR_BANNER, COLOR_RESET)
+    print(banner)
     # Create the argument parser
     parser = argparse.ArgumentParser(description="check information of tls cipher suites from the Ciphersuite.info API")
     parser.add_argument("-C", "--cipher", type=str, help="Get information about a specific cipher suite by name")
