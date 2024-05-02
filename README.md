@@ -3,8 +3,10 @@
 </p>
 
 # CipherSafe
-CipherSafe is a Python script to check information about TLS cipher suites.
-CipherSafe is a Python script designed to assist with security testing by providing information about TLS cipher suites. It leverages the Ciphersuite.info API to retrieve detailed data about specific cipher suites commonly used in secure communication protocols like HTTPS.
+CipherSafe is a Python script designed to assist with security testing by providing information about TLS cipher suites. It leverages the [cipherinfo API](https://github.com/hcrudolph/ciphersuite.info.git) to retrieve detailed data about specific cipher suites commonly used in secure communication protocols like HTTPS.
+
+### Coming Soon:
+In the next update, I'll add a scanning feature. This feature will let you check all cipher suites of a host directly from the tool. It will make it easier to evaluate the security of your TLS configurations.
 
 ## Features
 
