@@ -20,16 +20,20 @@ def main():
     # Create the argument parser
     parser = argparse.ArgumentParser(description="check information of tls cipher suites from the Ciphersuite.info API")
     parser.add_argument("-C", "--cipher", type=str, help="Get information about a specific cipher suite by name")
+    parser.add_argument("-L", "--list", type=str, help="Import a file containing a list of all ciphers")
     args = parser.parse_args()
     if args.cipher:
         get_cipher_suite(args.cipher)
+    elif args.list:
+        list_cipher_suites(args.list)
     else:
         print("Please provide an argument. Use -h or --help for more information.")
 
 
 # base URL of the API
 base_url = "https://ciphersuite.info/api"
-
+def list_cipher_suites(file_path):
+    print(file_path)
 def get_cipher_suite(cipher_suite_name):
     # Endpoint for getting a TLS cipher suite by name
     endpoint = "/cs/{}".format(cipher_suite_name)
