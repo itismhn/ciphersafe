@@ -44,6 +44,11 @@ To use this option, run the script and provide the cipher suite name as an argum
 ```bash
 python ciphersafe.py -C <cipher_suite_name>
 ```
+##### Example
+<p align="center">
+  <img src="images/cipher-arg.png" />
+</p>
+
 #### List of Cipher Suites
 
 The list option enables you to import a file containing a list of cipher suites and retrieve the `security` status for each one.
@@ -54,7 +59,9 @@ To utilize this option, execute the following command:
 python script.py -L <file_path>
 ```
 ##### Example
-
+<p align="center">
+  <img src="images/list-arg.png" />
+</p>
 Suppose you have a file named `cipher_list.txt` containing a list of cipher suites:
 ```
 TLS_RSA_WITH_AES_128_CBC_SHA
