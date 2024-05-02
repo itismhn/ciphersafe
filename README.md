@@ -35,7 +35,35 @@ CipherSafe is a Python script designed to assist with security testing by provid
 
 ## Usage
 
-Run the script and provide the cipher suite name as an argument:
+#### Specific Cipher Suite
+
+The `Cipher` option allows you to retrieve the security status of a specific cipher suite.
+
+To use this option, run the script and provide the cipher suite name as an argument:
 
 ```bash
 python ciphersafe.py -C <cipher_suite_name>
+```
+#### List of Cipher Suites
+
+The list option enables you to import a file containing a list of cipher suites and retrieve the `security` status for each one.
+
+To utilize this option, execute the following command:
+
+```bash
+python script.py -L <file_path>
+```
+##### Example
+
+Suppose you have a file named `cipher_list.txt` containing a list of cipher suites:
+```
+TLS_RSA_WITH_AES_128_CBC_SHA
+TLS_RSA_WITH_AES_256_CBC_SHA
+TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
+```
+You can use the list option to fetch information about each cipher suite listed in the file:
+
+```bash
+python script.py -L cipher_list.txt
+```
+This command will retrieve and display the security status of each cipher suite listed in cipher_list.txt.
