@@ -42,7 +42,7 @@ The `Cipher` option allows you to retrieve the security status of a specific cip
 To use this option, run the script and provide the cipher suite name as an argument:
 
 ```bash
-python ciphersafe.py -C <cipher_suite_name>
+python3 ciphersafe.py -C <cipher_suite_name>
 ```
 ##### Example
 <p align="center">
@@ -56,7 +56,7 @@ The list option enables you to import a file containing a list of cipher suites 
 To utilize this option, execute the following command:
 
 ```bash
-python script.py -L <file_path>
+python3 script.py -L <file_path>
 ```
 ##### Example
 <p align="center">
@@ -71,6 +71,6 @@ TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
 You can use the list option to fetch information about each cipher suite listed in the file:
 
 ```bash
-python script.py -L cipher_list.txt
+python3 script.py -L cipher_list.txt
 ```
 This command will retrieve and display the security status of each cipher suite listed in cipher_list.txt.
