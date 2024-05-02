@@ -34,7 +34,7 @@ def main():
 base_url = "https://ciphersuite.info/api"
 def list_cipher_suites(file_path):
     with open(file_path, 'r') as file:
-        cipher = file.readlines()
+        ciphers = file.readlines()
 def get_cipher_suite(cipher_suite_name):
     # Endpoint for getting a TLS cipher suite by name
     endpoint = "/cs/{}".format(cipher_suite_name)
