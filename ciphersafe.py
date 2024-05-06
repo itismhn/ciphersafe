@@ -68,7 +68,7 @@ def get_cipher_suite(cipher_suite_name):
         print(COLOR_YELLOW + "Cipher Suite:" + COLOR_RESET, COLOR_WHITE + str(cipher_suite_name) + COLOR_RESET)
         print(COLOR_YELLOW + "Security:" + COLOR_RESET, end=" ")
         security_status = cipher_info.get('security', 'N/A')
-        if security_status == 'secure':
+        if security_status == 'secure' or security_status == 'recommended':
             print(COLOR_GREEN + security_status + COLOR_RESET)
         elif security_status == 'weak':
             print(COLOR_YELLOW + security_status + COLOR_RESET)
