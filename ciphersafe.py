@@ -55,7 +55,8 @@ def list_cipher_suites(file_path):
             else:
                 security_fin = COLOR_RED + security_status + COLOR_RESET
             print(COLOR_YELLOW + COLOR_RESET, COLOR_WHITE + str(cipher) + COLOR_RESET + " [" + security_fin + "]")
-
+        else:
+            print(f"[ {cipher} Not Found ]")
 def get_cipher_suite(cipher_suite_name):
     # Endpoint for getting a TLS cipher suite by name
     endpoint = "/cs/{}".format(cipher_suite_name)
