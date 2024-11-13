@@ -40,31 +40,7 @@ def extract_ciphers(input_data):
 
 # base URL of the API
 base_url = "https://ciphersuite.info/api"
-def list_cipher_suites(file_path):
-    with open(file_path, 'r') as file:
-        ciphers = file.readlines()
 
-    for cipher in ciphers:
-        cipher = cipher.strip()
-        endpoint = "/cs/{}".format(cipher)
-        url = base_url + endpoint
-        # Send a GET request to the API
-        response = requests.get(url)
-        # Check if the request was successful (status code 200)
-        if response.status_code == 200:
-            # Parse the JSON response
-            data = response.json()
-            cipher_info = data[cipher]
-            security_status = cipher_info.get('security', 'N/A')
-            if security_status == 'secure':
-                security_fin = COLOR_GREEN + security_status + COLOR_RESET
-            elif security_status == 'weak':
-                security_fin = COLOR_YELLOW + security_status + COLOR_RESET
-            else:
-                security_fin = COLOR_RED + security_status + COLOR_RESET
-            print(COLOR_YELLOW + COLOR_RESET, COLOR_WHITE + str(cipher) + COLOR_RESET + " [" + security_fin + "]")
-        else:
-            print(f"{cipher} [ Not Found ]")
 def get_cipher_suite(cipher_suite_name):
     # Endpoint for getting a TLS cipher suite by name
     endpoint = "/cs/{}".format(cipher_suite_name)
