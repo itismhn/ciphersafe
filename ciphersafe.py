@@ -20,7 +20,7 @@ def main():
     """.format(COLOR_WHITE, COLOR_GREEN, COLOR_RESET, COLOR_GREEN, COLOR_RESET)
     print(banner)
     # Parse arguments
-    parser = argparse.ArgumentParser(description="Process and get details for TLS cipher suites from Nmap output")
+    parser = argparse.ArgumentParser(description="Process and get details for TLS cipher suites from any output")
     parser.add_argument("-v", "--verbose", action="store_true", help="Enable verbose mode for detailed information")
     args = parser.parse_args()
     # Read input from stdin (piped data) or command-line arguments
@@ -102,7 +102,7 @@ def print_cipher_details(ciphers):
 def get_cipher_suite_info(cipher_suite_name):
     # Retrieve and return detailed information for a specific cipher suite.
     endpoint = f"/cs/{cipher_suite_name}"
-    url = BASE_URL + endpoint
+    url = base_url + endpoint
     response = requests.get(url)
     
     if response.status_code == 200:
