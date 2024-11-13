@@ -84,7 +84,6 @@ def print_cipher_details(ciphers):
         if cipher_info:
             cipher_data = cipher_info.get(cipher, {})
             security_status = cipher_data.get('security', 'N/A')
-            print(f"\n--------------------------------------------------")
             print(f"Suite: {COLOR_WHITE}{cipher}{COLOR_RESET}")
             print(f"Security: {COLOR_YELLOW}{security_status}{COLOR_RESET}")
             print(f"TLS Version: {COLOR_WHITE}{str(cipher_data.get('tls_version', 'N/A'))}{COLOR_RESET}")
