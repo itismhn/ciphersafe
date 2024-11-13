@@ -41,6 +41,31 @@ def extract_ciphers(input_data):
 # base URL of the API
 base_url = "https://ciphersuite.info/api"
 
+def print_cipher_list(ciphers):
+    # Print a list of cipher suites with their security status.
+    cipher_list = []
+    
+    for cipher in ciphers:
+        cipher_info = get_cipher_suite_info(cipher)
+        
+        if cipher_info:
+            cipher_data = cipher_info.get(cipher, {})
+            security_status = cipher_data.get('security', 'N/A')
+            if security_status == 'secure' or security_status == 'recommended':
+                security_fin = COLOR_GREEN + security_status + COLOR_RESET
+            elif security_status == 'weak':
+                security_fin = COLOR_YELLOW + security_status + COLOR_RESET
+            else:
+                security_fin = COLOR_RED + security_status + COLOR_RESET
+            
+            cipher_list.append(f"{COLOR_WHITE}{cipher}{COLOR_RESET} [{security_fin}]")
+        else:
+            cipher_list.append(f"{COLOR_RED}Failed to retrieve data for {cipher}{COLOR_RESET}")
+
+    # Print the list of cipher suites with security status
+    print("Cipher Suites and Security Status:")
+    for cipher in cipher_list:
+        print(cipher)
 
 if __name__ == "__main__":
     main()
