@@ -18,11 +18,16 @@ def main():
 {}@itisMHN{}|_|{}V.1.1 github.com/itismhn/ciphersafe{}
     """.format(COLOR_WHITE, COLOR_GREEN, COLOR_RESET, COLOR_GREEN, COLOR_RESET)
     print(banner)
-    # Create the argument parser
-    parser = argparse.ArgumentParser(description="check information of tls cipher suites from the Ciphersuite.info API")
-    parser.add_argument("-C", "--cipher", type=str, help="Get information about a specific cipher suite by name")
-    parser.add_argument("-L", "--list", type=str, help="Import a file containing a list of all ciphers")
+    # Parse arguments
+    parser = argparse.ArgumentParser(description="Process and get details for TLS cipher suites from Nmap output")
+    parser.add_argument("-v", "--verbose", action="store_true", help="Enable verbose mode for detailed information")
     args = parser.parse_args()
+    # Read input from stdin (piped data) or command-line arguments
+    input_data = sys.stdin.read() if not sys.stdin.isatty() else ' '.join(sys.argv[1:])
+    if not input_data:
+        print("No input provided. Please provide Nmap output or cipher suite data.")
+        sys.exit(1)
+
     if args.cipher:
         get_cipher_suite(args.cipher)
     elif args.list:
