@@ -90,5 +90,17 @@ def print_cipher_details(ciphers):
         else:
             print(f"{COLOR_RED}Failed to retrieve data for {cipher}{COLOR_RESET}")
 
+def get_cipher_suite_info(cipher_suite_name):
+    # Retrieve and return detailed information for a specific cipher suite.
+    endpoint = f"/cs/{cipher_suite_name}"
+    url = BASE_URL + endpoint
+    response = requests.get(url)
+    
+    if response.status_code == 200:
+        return response.json()
+    else:
+        return None
+
+
 if __name__ == "__main__":
     main()
