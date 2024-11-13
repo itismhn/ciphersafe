@@ -1,6 +1,7 @@
 import requests
 import argparse
 import re
+import sys
 
 COLOR_BOLD = "\033[1m"
 COLOR_RESET = "\033[0m"
