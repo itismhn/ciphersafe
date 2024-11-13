@@ -1,5 +1,6 @@
 import requests
 import argparse
+import re
 
 COLOR_BOLD = "\033[1m"
 COLOR_RESET = "\033[0m"
@@ -29,6 +30,11 @@ def main():
     else:
         print("Please provide an argument. Use -h or --help for more information.")
 
+def extract_ciphers(input_data):
+    # Extract cipher suites from input data using regex
+    cipher_pattern = r"TLS_[A-Z0-9_]+"  # Regex to find TLS cipher suite names
+    ciphers = re.findall(cipher_pattern, input_data)
+    return set(ciphers)
 
 # base URL of the API
 base_url = "https://ciphersuite.info/api"
