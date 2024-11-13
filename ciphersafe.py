@@ -27,13 +27,10 @@ def main():
     if not input_data:
         print("No input provided. Please provide Nmap output or cipher suite data.")
         sys.exit(1)
-
-    if args.cipher:
-        get_cipher_suite(args.cipher)
-    elif args.list:
-        list_cipher_suites(args.list)
+    # Extract cipher suites from the input data
+    cipher_suites = extract_ciphers(input_data)
     else:
-        print("Please provide an argument. Use -h or --help for more information.")
+        print("No cipher suites found in the provided input.")
 
 def extract_ciphers(input_data):
     # Extract cipher suites from input data using regex
