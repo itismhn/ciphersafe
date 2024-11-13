@@ -29,8 +29,16 @@ def main():
         sys.exit(1)
     # Extract cipher suites from the input data
     cipher_suites = extract_ciphers(input_data)
+    if cipher_suites:
+        # First, print the cipher suite list with security status
+        print_cipher_list(cipher_suites)
+        
+        # If verbose mode is enabled, print detailed information for each cipher suite
+        if args.verbose:
+            print_cipher_details(cipher_suites)
     else:
         print("No cipher suites found in the provided input.")
+    
 
 def extract_ciphers(input_data):
     # Extract cipher suites from input data using regex
