@@ -67,5 +67,28 @@ def print_cipher_list(ciphers):
     for cipher in cipher_list:
         print(cipher)
 
+def print_cipher_details(ciphers):
+    """Print detailed information for each cipher suite."""
+    for cipher in ciphers:
+        cipher_info = get_cipher_suite_info(cipher)
+        
+        if cipher_info:
+            cipher_data = cipher_info.get(cipher, {})
+            security_status = cipher_data.get('security', 'N/A')
+            print(f"\n--------------------------------------------------")
+            print(f"Suite: {COLOR_WHITE}{cipher}{COLOR_RESET}")
+            print(f"Security: {COLOR_YELLOW}{security_status}{COLOR_RESET}")
+            print(f"TLS Version: {COLOR_WHITE}{str(cipher_data.get('tls_version', 'N/A'))}{COLOR_RESET}")
+            print(f"Hex Byte 1: {COLOR_WHITE}{str(cipher_data.get('hex_byte_1', 'N/A'))}{COLOR_RESET}")
+            print(f"Hex Byte 2: {COLOR_WHITE}{str(cipher_data.get('hex_byte_2', 'N/A'))}{COLOR_RESET}")
+            print(f"Protocol Version: {COLOR_WHITE}{str(cipher_data.get('protocol_version', 'N/A'))}{COLOR_RESET}")
+            print(f"Key Exchange Algorithm: {COLOR_WHITE}{str(cipher_data.get('kex_algorithm', 'N/A'))}{COLOR_RESET}")
+            print(f"Authentication Algorithm: {COLOR_WHITE}{str(cipher_data.get('auth_algorithm', 'N/A'))}{COLOR_RESET}")
+            print(f"Encryption Algorithm: {COLOR_WHITE}{str(cipher_data.get('enc_algorithm', 'N/A'))}{COLOR_RESET}")
+            print(f"Hash Algorithm: {COLOR_WHITE}{str(cipher_data.get('hash_algorithm', 'N/A'))}{COLOR_RESET}")
+            print(f"--------------------------------------------------")
+        else:
+            print(f"{COLOR_RED}Failed to retrieve data for {cipher}{COLOR_RESET}")
+
 if __name__ == "__main__":
     main()
