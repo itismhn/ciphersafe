@@ -10,6 +10,9 @@ COLOR_GREEN = "\033[32m"
 COLOR_YELLOW = "\033[93m"
 COLOR_WHITE = "\033[1;37m"
 
+# base URL of the API
+base_url = "https://ciphersuite.info/api"
+
 def main():
     banner = """
    {}___ _      _            ___        __     
@@ -19,96 +22,94 @@ def main():
 {}@itisMHN{}|_|{}V.1.1 github.com/itismhn/ciphersafe{}
     """.format(COLOR_WHITE, COLOR_GREEN, COLOR_RESET, COLOR_GREEN, COLOR_RESET)
     print(banner)
+
     # Parse arguments
     parser = argparse.ArgumentParser(description="Process and get details for TLS cipher suites from any output")
     parser.add_argument("-v", "--verbose", action="store_true", help="Enable verbose mode for detailed information")
+    parser.add_argument("-c", "--cipher", help="Query information for a single cipher suite")
     args = parser.parse_args()
-    # Read input from stdin (piped data) or command-line arguments
+
+    # Handle -c for a single cipher
+    if args.cipher:
+        cipher = args.cipher.strip()
+        if args.verbose:
+            print_cipher_details([cipher])
+        else:
+            print_cipher_list([cipher])
+        return
+
+
+    # Otherwise, read input from stdin (piped data) or command-line arguments
     input_data = sys.stdin.read() if not sys.stdin.isatty() else ' '.join(sys.argv[1:])
     if not input_data:
         print("No input provided. Please provide Nmap output or cipher suite data.")
         sys.exit(1)
+
     # Extract cipher suites from the input data
     cipher_suites = extract_ciphers(input_data)
     if cipher_suites:
-        # First, print the cipher suite list with security status
         print_cipher_list(cipher_suites)
-        
-        # If verbose mode is enabled, print detailed information for each cipher suite
         if args.verbose:
             print_cipher_details(cipher_suites)
     else:
         print("No cipher suites found in the provided input.")
-    
 
 def extract_ciphers(input_data):
     # Extract cipher suites from input data using regex
-    cipher_pattern = r"TLS_[A-Z0-9_]+"  # Regex to find TLS cipher suite names
+    cipher_pattern = r"TLS_[A-Z0-9_]+"
     ciphers = re.findall(cipher_pattern, input_data)
     return set(ciphers)
 
-# base URL of the API
-base_url = "https://ciphersuite.info/api"
-
 def print_cipher_list(ciphers):
-    # Print a list of cipher suites with their security status.
+    # Print a list of cipher suites with their security status
     cipher_list = []
-    
     for cipher in ciphers:
         cipher_info = get_cipher_suite_info(cipher)
-        
         if cipher_info:
             cipher_data = cipher_info.get(cipher, {})
             security_status = cipher_data.get('security', 'N/A')
-            if security_status == 'secure' or security_status == 'recommended':
+            if security_status in ('secure', 'recommended'):
                 security_fin = COLOR_GREEN + security_status + COLOR_RESET
             elif security_status == 'weak':
                 security_fin = COLOR_YELLOW + security_status + COLOR_RESET
             else:
                 security_fin = COLOR_RED + security_status + COLOR_RESET
-            
             cipher_list.append(f"{COLOR_WHITE}{cipher}{COLOR_RESET} [{security_fin}]")
         else:
             cipher_list.append(f"{COLOR_RED}Failed to retrieve data for {cipher}{COLOR_RESET}")
-
-    # Print the list of cipher suites with security status
     print("Cipher Suites and Security Status:")
-    for cipher in cipher_list:
-        print(cipher)
+    for line in cipher_list:
+        print(line)
 
 def print_cipher_details(ciphers):
-    """Print detailed information for each cipher suite."""
     for cipher in ciphers:
         cipher_info = get_cipher_suite_info(cipher)
-        
         if cipher_info:
             cipher_data = cipher_info.get(cipher, {})
-            security_status = cipher_data.get('security', 'N/A')
             print(f"Suite: {COLOR_WHITE}{cipher}{COLOR_RESET}")
-            print(f"Security: {COLOR_YELLOW}{security_status}{COLOR_RESET}")
-            print(f"TLS Version: {COLOR_WHITE}{str(cipher_data.get('tls_version', 'N/A'))}{COLOR_RESET}")
-            print(f"Hex Byte 1: {COLOR_WHITE}{str(cipher_data.get('hex_byte_1', 'N/A'))}{COLOR_RESET}")
-            print(f"Hex Byte 2: {COLOR_WHITE}{str(cipher_data.get('hex_byte_2', 'N/A'))}{COLOR_RESET}")
-            print(f"Protocol Version: {COLOR_WHITE}{str(cipher_data.get('protocol_version', 'N/A'))}{COLOR_RESET}")
-            print(f"Key Exchange Algorithm: {COLOR_WHITE}{str(cipher_data.get('kex_algorithm', 'N/A'))}{COLOR_RESET}")
-            print(f"Authentication Algorithm: {COLOR_WHITE}{str(cipher_data.get('auth_algorithm', 'N/A'))}{COLOR_RESET}")
-            print(f"Encryption Algorithm: {COLOR_WHITE}{str(cipher_data.get('enc_algorithm', 'N/A'))}{COLOR_RESET}")
-            print(f"Hash Algorithm: {COLOR_WHITE}{str(cipher_data.get('hash_algorithm', 'N/A'))}{COLOR_RESET}")
+            print(f"Security: {COLOR_YELLOW}{cipher_data.get('security', 'N/A')}{COLOR_RESET}")
+            print(f"TLS Version: {COLOR_WHITE}{cipher_data.get('tls_version', 'N/A')}{COLOR_RESET}")
+            print(f"Hex Byte 1: {COLOR_WHITE}{cipher_data.get('hex_byte_1', 'N/A')}{COLOR_RESET}")
+            print(f"Hex Byte 2: {COLOR_WHITE}{cipher_data.get('hex_byte_2', 'N/A')}{COLOR_RESET}")
+            print(f"Protocol Version: {COLOR_WHITE}{cipher_data.get('protocol_version', 'N/A')}{COLOR_RESET}")
+            print(f"Key Exchange Algorithm: {COLOR_WHITE}{cipher_data.get('kex_algorithm', 'N/A')}{COLOR_RESET}")
+            print(f"Authentication Algorithm: {COLOR_WHITE}{cipher_data.get('auth_algorithm', 'N/A')}{COLOR_RESET}")
+            print(f"Encryption Algorithm: {COLOR_WHITE}{cipher_data.get('enc_algorithm', 'N/A')}{COLOR_RESET}")
+            print(f"Hash Algorithm: {COLOR_WHITE}{cipher_data.get('hash_algorithm', 'N/A')}{COLOR_RESET}")
             print(f"--------------------------------------------------")
         else:
             print(f"{COLOR_RED}Failed to retrieve data for {cipher}{COLOR_RESET}")
 
 def get_cipher_suite_info(cipher_suite_name):
-    # Retrieve and return detailed information for a specific cipher suite.
     endpoint = f"/cs/{cipher_suite_name}"
     url = base_url + endpoint
-    response = requests.get(url)
-    
-    if response.status_code == 200:
-        return response.json()
-    else:
-        return None
-
+    try:
+        response = requests.get(url)
+        if response.status_code == 200:
+            return response.json()
+    except requests.RequestException:
+        pass
+    return None
 
 if __name__ == "__main__":
     main()
