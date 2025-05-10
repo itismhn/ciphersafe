@@ -65,14 +65,27 @@ python3 script.py -L <file_path>
   <img src="images/list-arg.png" />
 </p>
 Suppose you have a file named `cipher_list.txt` containing a list of cipher suites:
+
 ```
 TLS_RSA_WITH_AES_128_CBC_SHA
 TLS_RSA_WITH_AES_256_CBC_SHA
 TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
 ```
+
 You can use the list option to fetch information about each cipher suite listed in the file:
 
 ```bash
 python3 script.py -L cipher_list.txt
 ```
 This command will retrieve and display the security status of each cipher suite listed in cipher_list.txt.
+
+### Use Nmap and Other tools
+
+You can use `ciphersafe.py` with tools like **Nmap**, **OpenSSL**, or provide cipher names directly to analyze their security status.
+
+---
+
+#### Example 1: Using Nmap to Extract Ciphers
+
+```bash
+nmap --script ssl-enum-ciphers -p 443 example.com | python3 ciphersafe.py
