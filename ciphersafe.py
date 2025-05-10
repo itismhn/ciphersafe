@@ -27,6 +27,7 @@ def main():
     parser = argparse.ArgumentParser(description="Process and get details for TLS cipher suites from any output")
     parser.add_argument("-v", "--verbose", action="store_true", help="Enable verbose mode for detailed information")
     parser.add_argument("-c", "--cipher", help="Query information for a single cipher suite")
+    parser.add_argument("-l", "--list", help="Query information for a comma-separated list of cipher suites")
     args = parser.parse_args()
 
     # Handle -c for a single cipher
@@ -38,6 +39,24 @@ def main():
             print_cipher_list([cipher])
         return
 
+    # Handle -l for a list of ciphers
+    if args.list:
+        try:
+            with open(args.list, 'r') as file:
+                cipher_suites = [line.strip() for line in file if line.strip()]
+        except Exception as e:
+            print(f"{COLOR_RED}Error reading file: {e}{COLOR_RESET}")
+            sys.exit(1)
+
+        if cipher_suites:
+            print_cipher_list(cipher_suites)
+            if args.verbose:
+                print_cipher_details(cipher_suites)
+        else:
+            print(f"{COLOR_RED}No valid cipher suites found in the file.{COLOR_RESET}")
+    else:
+        print("No input provided. Please provide Nmap output, a cipher name with -C, or a list with -l.")
+        sys.exit(1)
 
     # Otherwise, read input from stdin (piped data) or command-line arguments
     input_data = sys.stdin.read() if not sys.stdin.isatty() else ' '.join(sys.argv[1:])
