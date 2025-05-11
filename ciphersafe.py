@@ -2,7 +2,7 @@ import requests
 import argparse
 import re
 import sys
-
+from sslinspect import get_certificate_info
 
 COLOR_BOLD = "\033[1m"
 COLOR_RESET = "\033[0m"
@@ -36,7 +36,17 @@ def main():
     # Handle -u for ssl inspection
     if args.url:
         url = args.url.strip()
-        print(url)
+        port=443
+        cert_data = get_certificate_info(url, port)
+
+        print("\n=== Certificate Information ===")
+        for key, value in cert_data.items():
+            if key == "ciphers":
+                print("\nSupported Ciphers:")
+                for cipher in value:
+                    print(f"- {cipher}")
+            else:
+                pass
     # Handle -c for a single cipher
     if args.cipher:
         cipher = args.cipher.strip()
