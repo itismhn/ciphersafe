@@ -3,6 +3,7 @@ import argparse
 import re
 import sys
 
+
 COLOR_BOLD = "\033[1m"
 COLOR_RESET = "\033[0m"
 COLOR_RED = "\033[91m"
@@ -28,8 +29,14 @@ def main():
     parser.add_argument("-v", "--verbose", action="store_true", help="Enable verbose mode for detailed information")
     parser.add_argument("-c", "--cipher", help="Query information for a single cipher suite")
     parser.add_argument("-l", "--list", help="Query information for a comma-separated list of cipher suites")
+    parser.add_argument("-u", "--url", help="Do SSL Inspect on a url")
+
     args = parser.parse_args()
 
+    # Handle -u for ssl inspection
+    if args.url:
+        url = args.url.strip()
+        print(url)
     # Handle -c for a single cipher
     if args.cipher:
         cipher = args.cipher.strip()
