@@ -78,7 +78,14 @@ You can use the list option to fetch information about each cipher suite listed 
 python3 script.py -L cipher_list.txt
 ```
 This command will retrieve and display the security status of each cipher suite listed in cipher_list.txt.
+#### Domain SSL Inspection (-u)
 
+The -u option allows you to inspect a domain and retrieve the list of supported TLS cipher suites along with their security status.
+
+To use this option, run the script and provide the domain name as an argument:
+```python
+python3 ciphersafe.py -u <domain>
+```
 ### Use Nmap and Other tools
 
 You can use `ciphersafe.py` with tools like **Nmap**, **OpenSSL**, or provide cipher names directly to analyze their security status.
