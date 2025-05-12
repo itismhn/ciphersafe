@@ -38,18 +38,14 @@ def main():
         url = args.url.strip()
         port=443
         cert_data = get_certificate_info(url, port)
-        cipher_suite_list=[]
         print("\n=== Certificate Information ===")
         for key, value in cert_data.items():
             if key == "ciphers":
                 print("\nSupported Ciphers:")
                 for cipher in value:
                     print(f"- {cipher}")
-                    cipher_suite_list.append(cipher)
             else:
                 pass
-            if cipher_suite_list:
-                print_cipher_list(cipher_suite_list)
     # Handle -c for a single cipher
     if args.cipher:
         cipher = args.cipher.strip()
@@ -100,28 +96,36 @@ def extract_ciphers(input_data):
     return set(ciphers)
 
 def print_cipher_list(ciphers):
-    # Print a list of cipher suites with their security status
     cipher_list = []
     for cipher in ciphers:
-        original_cipher = cipher
-        cipher_info = get_cipher_suite_info(cipher)
-        if cipher_info is None:
-            # Try again with TLS_ prepended
-            cipher = "TLS_" + str(cipher)
-            cipher_info = get_cipher_suite_info(cipher)
+        original_cipher = cipher.strip()
+
+        # Try without TLS_ prefix
+        cipher_info = get_cipher_suite_info(original_cipher)
+
+        # If not found, try with TLS_ prefix
+        if cipher_info is None and not original_cipher.startswith("TLS_"):
+            prefixed_cipher = "TLS_" + original_cipher
+            cipher_info = get_cipher_suite_info(prefixed_cipher)
+            cipher_to_display = prefixed_cipher if cipher_info else original_cipher
+        else:
+            cipher_to_display = original_cipher
+
         if cipher_info:
-            cipher_data = cipher_info.get(cipher, {})
+            cipher_data = cipher_info.get(cipher_to_display, {})
             security_status = cipher_data.get('security', 'N/A')
+
             if security_status in ('secure', 'recommended'):
                 security_fin = COLOR_GREEN + security_status + COLOR_RESET
             elif security_status == 'weak':
                 security_fin = COLOR_YELLOW + security_status + COLOR_RESET
             else:
                 security_fin = COLOR_RED + security_status + COLOR_RESET
-            cipher_list.append(f"{COLOR_WHITE}{cipher}{COLOR_RESET} [{security_fin}]")
+
+            cipher_list.append(f"{COLOR_WHITE}{cipher_to_display}{COLOR_RESET} [{security_fin}]")
         else:
             cipher_list.append(f"{COLOR_RED}Failed to retrieve data for {original_cipher}{COLOR_RESET}")
-    
+
     print("Cipher Suites and Security Status:")
     for line in cipher_list:
         print(line)
