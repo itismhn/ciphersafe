@@ -38,15 +38,18 @@ def main():
         url = args.url.strip()
         port=443
         cert_data = get_certificate_info(url, port)
-
+        cipher_suite_list=[]
         print("\n=== Certificate Information ===")
         for key, value in cert_data.items():
             if key == "ciphers":
                 print("\nSupported Ciphers:")
                 for cipher in value:
                     print(f"- {cipher}")
+                    cipher_suite_list.append(cipher)
             else:
                 pass
+            if cipher_suite_list:
+                print_cipher_list(cipher_suite_list)
     # Handle -c for a single cipher
     if args.cipher:
         cipher = args.cipher.strip()
@@ -54,7 +57,7 @@ def main():
             print_cipher_details([cipher])
         else:
             print_cipher_list([cipher])
-        return
+    return
 
     # Handle -l for a list of ciphers
     if args.list:
