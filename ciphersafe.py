@@ -100,7 +100,12 @@ def print_cipher_list(ciphers):
     # Print a list of cipher suites with their security status
     cipher_list = []
     for cipher in ciphers:
+        original_cipher = cipher
         cipher_info = get_cipher_suite_info(cipher)
+        if cipher_info is None:
+            # Try again with TLS_ prepended
+            cipher = "TLS_" + str(cipher)
+            cipher_info = get_cipher_suite_info(cipher)
         if cipher_info:
             cipher_data = cipher_info.get(cipher, {})
             security_status = cipher_data.get('security', 'N/A')
@@ -112,7 +117,8 @@ def print_cipher_list(ciphers):
                 security_fin = COLOR_RED + security_status + COLOR_RESET
             cipher_list.append(f"{COLOR_WHITE}{cipher}{COLOR_RESET} [{security_fin}]")
         else:
-            cipher_list.append(f"{COLOR_RED}Failed to retrieve data for {cipher}{COLOR_RESET}")
+            cipher_list.append(f"{COLOR_RED}Failed to retrieve data for {original_cipher}{COLOR_RESET}")
+    
     print("Cipher Suites and Security Status:")
     for line in cipher_list:
         print(line)
