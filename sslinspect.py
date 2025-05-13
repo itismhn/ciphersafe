@@ -10,46 +10,50 @@ from cryptography.utils import CryptographyDeprecationWarning
 
 warnings.filterwarnings("ignore", category=CryptographyDeprecationWarning)
 
-def get_certificate_extensions(cert: x509.Certificate) -> Dict[str, Any]:
-    ext_dict = {}
-    for ext in cert.extensions:
-        ext_name = ext.oid._name if ext.oid._name else str(ext.oid)
-        ext_dict[ext_name] = {"critical": ext.critical, "value": ext.value}
-    return ext_dict
+def extract_cert_extensions(certificate: x509.Certificate) -> Dict[str, Any]:
+    extensions = {}
+    for extension in certificate.extensions:
+        extension_name = extension.oid._name if extension.oid._name else str(extension.oid)
+        extensions[extension_name] = {
+            "critical": extension.critical,
+            "value": extension.value
+        }
+    return extensions
 
-def get_supported_ciphers(host: str, port: int) -> List[str]:
-    available_ciphers = ssl.create_default_context().get_ciphers()
-    supported_ciphers = []
+def detect_supported_ciphers(server_host: str, server_port: int) -> List[str]:
+    candidate_ciphers = ssl.create_default_context().get_ciphers()
+    compatible_ciphers = []
 
-    for cipher in available_ciphers:
-        cipher_name = cipher["name"]
+    for cipher_entry in candidate_ciphers:
+        cipher_label = cipher_entry["name"]
         with contextlib.suppress(Exception):
-            context = ssl.SSLContext(ssl.PROTOCOL_TLS_CLIENT)
-            context.set_ciphers(cipher_name)
-            context.check_hostname = False
-            context.verify_mode = ssl.CERT_NONE
+            tls_context = ssl.SSLContext(ssl.PROTOCOL_TLS_CLIENT)
+            tls_context.set_ciphers(cipher_label)
+            tls_context.check_hostname = False
+            tls_context.verify_mode = ssl.CERT_NONE
 
-            with socket.create_connection((host, port), timeout=2) as sock:
-                with context.wrap_socket(sock, server_hostname=host):
-                    supported_ciphers.append(cipher_name)
+            with socket.create_connection((server_host, server_port), timeout=2) as connection:
+                with tls_context.wrap_socket(connection, server_hostname=server_host):
+                    compatible_ciphers.append(cipher_label)
 
-    return supported_ciphers
-def get_certificate_info(host: str, port: int) -> Dict[str, Any]:
-    pem_data = bytes(ssl.get_server_certificate((host, port)), "utf-8")
-    cert = x509.load_pem_x509_certificate(pem_data, default_backend())
-    cert_info = {
-        "version": cert.version.name,
-        "serial": cert.serial_number,
-        "validity": {
-            "not_valid_before": str(cert.not_valid_before),
-            "not_valid_after": str(cert.not_valid_after),
+    return compatible_ciphers
+
+def retrieve_cert_details(server_host: str, server_port: int) -> Dict[str, Any]:
+    raw_cert = bytes(ssl.get_server_certificate((server_host, server_port)), "utf-8")
+    parsed_cert = x509.load_pem_x509_certificate(raw_cert, default_backend())
+    cert_details = {
+        "version": parsed_cert.version.name,
+        "serial_number": parsed_cert.serial_number,
+        "validity_period": {
+            "starts_on": str(parsed_cert.not_valid_before),
+            "expires_on": str(parsed_cert.not_valid_after),
         },
-        "issuer": {attr.oid._name: attr.value for attr in cert.issuer},
-        "fingerprints": {
-            "SHA256": cert.fingerprint(hashes.SHA256()),
-            "SHA1": cert.fingerprint(hashes.SHA1()),
+        "issuer_info": {field.oid._name: field.value for field in parsed_cert.issuer},
+        "fingerprint_hashes": {
+            "SHA256": parsed_cert.fingerprint(hashes.SHA256()),
+            "SHA1": parsed_cert.fingerprint(hashes.SHA1()),
         },
-        "extensions": get_certificate_extensions(cert),
-        "ciphers": get_supported_ciphers(host, port),
+        "extension_data": extract_cert_extensions(parsed_cert),
+        "cipher_suites": detect_supported_ciphers(server_host, server_port),
     }
-    return cert_info
+    return cert_details
